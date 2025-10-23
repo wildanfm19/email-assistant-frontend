@@ -9,7 +9,14 @@ const App = () => {
   const [error , setError] = useState('');
 
   const handleSubmit = async () => {
-    
+    setLoading(true);
+    setError('');
+    try{
+
+    } catch (error){
+      setError("Failed to generate email reply")
+    }
+
   }
 
   return (
@@ -52,6 +59,36 @@ const App = () => {
           {loading ? <CircularProgress size={24}/> : "Generate Reply"}
         </Button>
       </Box>
+
+      {error  && (
+          <Typography color='error' sx={{mb: 2}}>
+        {error}
+      </Typography>
+      )}
+
+      {generatedReply && (
+        <Box sx={{mt: 3}}>
+          <Typography variant='h6' gutterBottom>
+            Generated Reply: 
+          </Typography>
+          <TextField 
+            fullWidth
+            multiline
+            rows={6}
+            variant='outlined'
+            value={generatedReply || ''}
+            inputProps={{readOnly : true}}
+          />
+           <Button
+            variant='outlined'
+            sx={{mt: 2}}
+            onClick={() => navigator.clipboard.writeText(generatedReply)}>
+            
+
+          </Button>
+        </Box>
+      )
+      }
     </Container>
   )
 }
