@@ -1,4 +1,5 @@
 import { Box, Button, CircularProgress, Container, FormControl, InputLabel, Menu, MenuItem, Select, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import React, { useState } from 'react'
 
 const App = () => {
@@ -12,9 +13,16 @@ const App = () => {
     setLoading(true);
     setError('');
     try{
-
+      const response = await axios.post("http://localhost:8080/api/email/generate" , {
+        emailContent, 
+        tone
+      });
+      setGeneratedReply(typeof response.data === 'string' ? response.data : JSON.stringify(response.data));
     } catch (error){
-      setError("Failed to generate email reply")
+      setError("Failed to generate email reply");
+      console.error(error);
+    } finally{
+      setLoading(false);
     }
 
   }
@@ -82,9 +90,9 @@ const App = () => {
            <Button
             variant='outlined'
             sx={{mt: 2}}
-            onClick={() => navigator.clipboard.writeText(generatedReply)}>
-            
-
+            onClick={() => navigator.clipboard.writeText(generatedReply)}
+            >
+              Copy to clipboard
           </Button>
         </Box>
       )
