@@ -9,11 +9,13 @@ const App = () => {
   const [loading , setLoading] = useState(false);
   const [error , setError] = useState('');
 
+  const baseURL = "https://email-reply-assistant-8fddfa13f8ba.herokuapp.com";
+
   const handleSubmit = async () => {
     setLoading(true);
     setError('');
     try{
-      const response = await axios.post("http://localhost:8080/api/email/generate" , {
+      const response = await axios.post(`${baseURL}/api/email/generate` , {
         emailContent, 
         tone
       });
